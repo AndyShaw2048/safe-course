@@ -1,2 +1,1 @@
-Hello World
-Hi Xiao!
+西施E校通
