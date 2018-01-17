@@ -1,109 +1,129 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
-    <meta name="baidu-site-verification" content="XYuaxQuDYh" />
-    <title>西施e校通</title>
-    <meta name="keywords" content="西施e校通，西师e校通，e校通，易班e校通，西华师范大学e校通，西华师范大学易班"/>
-<meta name="description" content="西施E校通是一个集学校服务链接为一身的导航网站，旨在为同学们提供一个便捷的平台"/>
-    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<title>安全微课辅助系统</title>
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="http://wkzy.mycourse.cn/js/jquery-1.6.4.min.js"></script>
+    <script src="http://wkzy.mycourse.cn/js/wx.js"></script>
+    <script>
+
+function finishWxCourse(i) {
+	try{console.log(exportRoot.currentFrame)}catch(e){}
+    try {
+        var userid = "1692971";
+        var jiaoxuejihuaid = "48191";
+		//var referrerStr = document.referrer;
+        var finishWxHost = document.referrer.replace("http://","").replace("https://","").split("/")[0];
+		if(document.referrer=="" || document.referrer==null || document.referrer==undefined){
+			finishWxHost = "wx.mycourse.cn"
+		}
+
+		var $href = window.location.href;
+		var finishWxUrl=getRecordUrl($href);
+		var finishData = {"userid":userid, "jiaoxuejihuaid": i};
+
+        	//ajax jsonp 请求
+
+        $.ajax({
+            async: false,
+            url: "http://cp.mycourse.cn/wxcourse/addJiaoXueJiHuainfo.action",
+            type: "GET",
+            dataType: "jsonp",
+            data: finishData,
+            timeout: 5000,
+
+            success : function (data) {//客户端jquery预先定义好的callback函数,成功获取跨域服务器上的json数据后,会动态执行这个callback函数
+                if (data.msg == "ok") {
+                    //alert("恭喜，您已完成本微课的学习");
+                } else {
+                    alert("程序运行失败，请检查参数！");
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                  //alert("错误");
+            }
+        });
+    } catch (e) {
+        alert("报了啥错误" + e);
+    }
+}
+
+
+var isRunning = false;
+function sendAjax(first,last){
+	
+	if(isRunning)
+	{
+		alert('请等待任务运行完成');
+		return;
+	}
+	if($("#userid").val() == ""){
+		alert('userid禁止为空');
+		return;
+	}
+	$("#parent_bar").show();
+	isRunning = true;
+    var obj = document.getElementById("progress_bar");
+    var diff = 100/(last - first);
+	var j = 1;
+	var pro = 0;
+	for (var i = first; i <= last; i++,j++) {
+		setTimeout(finishWxCourse(i),j*1000);
+		setTimeout(function(){
+			
+			pro += diff;
+			$("#progress_bar").css("width",pro+"%");
+		    if(pro > 100)
+		    	{
+		    		$("#parent_bar").hide();
+		    		alert("本章微课已成功，请进入个人中心查看。");
+		    		isRunning = false;
+		    	}},j*1000);
+}
+}
+
+
+    </script>
+
+
 </head>
-
 <body>
-    <div class="banner"> 
-        <img src="img/1.png" class="img-responsive center-block">
+	<div class="container">
+		<p class="text-center" style="color: red;font-size:20px;">声明：本系统仅提供源码学习及成品展示，本人不承担任何因使用本系统而产生的问题与责任。</p>
+		<p class="text-center" style="color: blue;font-size:20px;">课程虽多，知识为重。望各位认真学习安全知识，做到自尊、自爱、自强。</p>
+		
+    <div class="progress progress-striped active" id="parent_bar">
+         <div class="progress-bar progress-bar-success" role="progressbar" id="progress_bar" 
+         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+         style="width: 0%;">
+         </div>
     </div>
-    <!--手机端页面-->
-    <div class="contener" style="margin : 5%">
-        <div class="row">
-            <div class="icon_content_holder center_content text-center">
-                <div class="icon_content_box ">
-<!--                <div class="visible-sm visible-xs visible-lg "> -->
-                    <div>
+<div class="text-center">
+	<input type="text" name="userid" placeholder="UserId" id="userid">
+	<p title="点击一个没有观看过的页面，在网址栏即可看到自己的userid" >如何查看userID？</p><br>
+	<button type="button" class="btn btn-primary" onclick="sendAjax(48177,48201);">人身安全</button>
+		<button type="button" class="btn btn-primary" onclick="sendAjax(48220,48225);">急救知识</button>
+		<button type="button" class="btn btn-primary" onclick="sendAjax(48297,48306);">应对突发事件
+</button>
+		<button type="button" class="btn btn-primary" onclick="sendAjax(48155,48176);">财产安全
+</button>
+		<button type="button" class="btn btn-primary" onclick="sendAjax(48226,48270);">防范诈骗
+</button>
+		<button type="button" class="btn btn-primary" onclick="sendAjax(48288,48296);">求职安全
+</button>
+		<button type="button" class="btn btn-primary" onclick="sendAjax(48202,48219);">求职安全
+</button>
+		<button type="button" class="btn btn-primary" onclick="sendAjax(48183,48183);">运动安全</button>
+		<button type="button" class="btn btn-primary" onclick="sendAjax(48271,48287);">禁毒教育
+</button>
+<p>若本系统已逾越学习目的，触碰底线，请联系QQ298906164进行删除。</p>
+</div>
 
-                       
-                            <div class="icon_class" >
-                                <a href="http://szhq.cwnu.edu.cn/rsp/weixin/wx_repairHome">
-                                    <div class="col-sm-4 col-xs-4  col-md-3">
-                                        <div class="icon_photo " style="margin : 5%"><img src="img/repair.png" class="img-responsive center-block">
-                                        </div>
-                                        <span>报修平台</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="icon_class" >
-                                <a href="http://210.41.193.66/">
-                                    <div class="col-sm-4 col-xs-4  col-md-3">
-                                        <div class="icon_photo " style="margin : 5%"><img src="img/finance.png" class="img-responsive center-block">
-                                        </div>
-                                        <span>计财处缴费</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="icon_class" > 
-                                <a href="http://210.41.203.100:8080/opac/login?referer=/opac/mylibrary&tag=index">
-                                    <div class="col-sm-4 col-xs-4  col-md-3">
-                                        <div class="icon_photo " style="margin : 5%"><img src="img/library.png" class="img-responsive center-block">
-                                        </div>
-                                        <span>图书馆查询</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="icon_class" >
-                                <a href="http://ecard.cwnu.edu.cn/index.jsp">
-                                    <div class="col-sm-4 col-xs-4 col-md-3">
-                                        <div class="icon_photo" style="margin : 5%"><img src="img/loss.png" class="img-responsive center-block">
-                                        </div>
-                                        <span>饭卡挂失</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="icon_class" >
-                                <a href="http://218.6.128.130/">
-                                    <div class="col-sm-4 col-xs-4  col-md-3">
-                                        <div class="icon_photo" style="margin : 5%"><img src="img/score.png" class="img-responsive center-block">
-                                        </div>
-                                        <span>成绩查询</span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="icon_class" >
-                                <a href="help.html">
-                                    <div class="col-sm-4 col-xs-4  col-md-3">
-                                        <div class="icon_photo" style="margin : 5%"><img src="img/other.png" class="img-responsive center-block">
-                                        </div>
-                                        <span>帮助</span>
-                                    </div>
-                                </a>
-                            </div>
+	</div>
 
-
-                            <!-- <div class="icon_class">
-                                <a href="http://www.cwnu.edu.cn/">
-                                    <div class="col-sm-4 col-xs-4  col-md-3">
-                                        <div class="icon_photo ">
-                                            <img src="img/library.png" class="img-responsive center-block">
-                                        </div>
-                                        <span>官网</span>
-                                    </div>
-                                </a>
-                            </div> -->
-
-                        </div>
-                
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <br>
-    <br>
 </body>
-<footer><center>@西华师范大学易班学生工作站<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1271630368'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1271630368%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script></center></footer>
-<script src="js/bootstrap.min.js"></script>
-
+<script type="text/javascript">
+	$("#parent_bar").hide();
+	
+</script>
 </html>
