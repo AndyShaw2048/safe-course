@@ -7,10 +7,10 @@
     <script src="http://wkzy.mycourse.cn/js/wx.js"></script>
     <script>
 
-function finishWxCourse(i) {
+function finishWxCourse(i,id) {
 	try{console.log(exportRoot.currentFrame)}catch(e){}
     try {
-        var userid = "1692971";
+        var userid = id;
         var jiaoxuejihuaid = "48191";
 		//var referrerStr = document.referrer;
         var finishWxHost = document.referrer.replace("http://","").replace("https://","").split("/")[0];
@@ -63,12 +63,13 @@ function sendAjax(first,last){
 	}
 	$("#parent_bar").show();
 	isRunning = true;
+	id = $("#userid").val();
     var obj = document.getElementById("progress_bar");
     var diff = 100/(last - first);
 	var j = 1;
 	var pro = 0;
 	for (var i = first; i <= last; i++,j++) {
-		setTimeout(finishWxCourse(i),j*1000);
+		setTimeout(finishWxCourse(i,id),j*1000);
 		setTimeout(function(){
 			
 			pro += diff;
